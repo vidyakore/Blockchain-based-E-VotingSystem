@@ -1,0 +1,9 @@
+PROJECT ID
+f326e67674c34f64b1f4cc1bf8de9d04
+PROJECT SECRET
+bff682f5f65343fd93650646c47ace82
+ENDPOINTS
+
+RINKEBY
+https://rinkeby.infura.io/v3/f326e67674c34f64b1f4cc1bf8de9d04
+wss://rinkeby.infura.io/ws/v3/f326e67674c34f64b1f4cc1bf8de9d04
