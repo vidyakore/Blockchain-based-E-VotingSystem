@@ -27,7 +27,7 @@ class contract_manager(models.Model):
     Id = models.AutoField(primary_key=True)
     name = models.CharField(max_length=100)
     email = models.EmailField(max_length=50)
-    phone_no = PhoneNumberField(max_length=12, unique=True)
+    phone_no = PhoneNumberField(max_length=13, unique=True)
     aadhaar_no = models.CharField(unique=True,max_length=50)
     password = models.CharField(max_length=50)
     confirm_password = models.CharField(max_length=50)
@@ -36,7 +36,7 @@ class booth_manager(models.Model):
     Id = models.AutoField(primary_key=True)
     name = models.CharField(max_length=100)
     email = models.EmailField(max_length=50,unique=True)
-    phone_no = PhoneNumberField(max_length=12,unique=True)
+    phone_no = PhoneNumberField(max_length=13,unique=True)
     aadhaar_no = models.CharField(unique=True,max_length=50)
     constituency_id = models.ForeignKey("constituency",on_delete=models.DO_NOTHING)
     password = models.CharField(max_length=50)
@@ -50,7 +50,7 @@ class voter(models.Model):
     age = models.IntegerField()
     address = models.TextField(max_length=200)
     email = models.EmailField(max_length=50, blank=True)
-    phone_no = PhoneNumberField(max_length=12,unique=True)
+    phone_no = PhoneNumberField(max_length=13,unique=True)
     
 class voter_constituency(models.Model):
     Id = models.AutoField(primary_key=True)
@@ -87,10 +87,3 @@ class voter_vote_status(models.Model):
     # Id = models.AutoField()
     voter_id=models.ForeignKey("voter",on_delete=models.DO_NOTHING)
     casted_vote=models.BooleanField(null=False)
-
-
-
-
-
-
-
