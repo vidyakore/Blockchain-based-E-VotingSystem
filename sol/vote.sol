@@ -62,4 +62,17 @@ contract vote{
         }          
   }
 
+
+  function removeCandidate(uint256 candidateId) public{
+               if (validCandidate(candidateId) ) {
+                delete candidateIdToVotes[candidateId];
+                delete CandidateIdtoName[candidateId];
+                delete CandidateIdtoBool[candidateId];
+                delete partyIdToCandidateId[candidateId];
+        }
+        else{
+            revert("Not a valid canditate ");
+        }
+  }
+
 }

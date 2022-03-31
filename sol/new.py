@@ -63,7 +63,7 @@ def add_candidate(contract_instance,candidate_name,candidate_id,party_id):
     
     
     return tx_receipt
-# add_candidate(vote_contract,"Alpha",2,1)
+add_candidate(vote_contract,candidate_name="vidyunmali",candidate_id=1,party_id=2)
 
 
 
