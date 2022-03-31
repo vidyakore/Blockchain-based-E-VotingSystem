@@ -20,13 +20,14 @@ contract vote{
     //name will be stored in memory
     
     function addCandidate(string memory _candidateName, uint256 _candidateId, uint256  _partyId) public {
-        // candidate.push(Candidate({votes : 0, candidateName:_candidateName,candidateId: _candidateId}));
+
         if (validCandidate(_candidateId) ) { revert("Not a valid canditate ");}
         else{
         CandidateIdtoName[_candidateId] = _candidateName;
         CandidateIdtoBool[_candidateId] = true;
         partyIdToCandidateId[_partyId] = _candidateId;
         }
+        
     }
 
     //checking if candidate is valid
@@ -52,7 +53,7 @@ contract vote{
         } 
     }
 
-    function get  (uint256 candidateId) public view returns(uint256){
+    function getVotes (uint256 candidateId) public view returns(uint256){
          if (validCandidate(candidateId) ) {
             return candidateIdToVotes[candidateId];
         }
