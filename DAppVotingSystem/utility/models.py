@@ -1,5 +1,6 @@
 from django.db import models
 from phonenumber_field.modelfields import PhoneNumberField
+from django.contrib.auth.models import AbstractBaseUser, BaseUserManager
 
 # Create your models here.
 class election_type(models.Model):
@@ -23,24 +24,57 @@ class constituency_type(models.Model):
     election_type_id=models.ForeignKey("election_type",on_delete=models.DO_NOTHING)
     constituency_id=models.ForeignKey("constituency",on_delete=models.DO_NOTHING)
 
-class contract_manager(models.Model):
-    Id = models.AutoField(primary_key=True)
-    name = models.CharField(max_length=100)
-    email = models.EmailField(max_length=50)
-    phone_no = PhoneNumberField(max_length=13, unique=True)
-    aadhaar_no = models.CharField(unique=True,max_length=50)
-    password = models.CharField(max_length=50)
-    confirm_password = models.CharField(max_length=50)
+# class contract_manager(models.Model):
+#     Id = models.AutoField(primary_key=True)
+#     name = models.CharField(max_length=100)
+#     email = models.EmailField(max_length=50)
+#     phone_no = PhoneNumberField(max_length=13, unique=True)
+#     aadhaar_no = models.CharField(unique=True,max_length=50)
+#     password = models.CharField(max_length=50)
+#     confirm_password = models.CharField(max_length=50)
 
-class booth_manager(models.Model):
+class contract_manager(BaseUserManager):
+    def create_user(self, email, password=None,**other_fields):
+        if not email:
+            raise ValueError('Users must have an email address')
+
+        user = self.model(
+            email=self.normalize_email(email),
+            **other_fields
+        )
+
+        user.set_password(password)
+        user.save(using=self._db)
+        return user
+
+    def create_superuser(self, email, password,phone_no,aadhar_no,id,**other_fields):
+
+        other_fields.setdefault('is_superuser', True)
+        other_fields.setdefault('is_active', True)
+        other_fields.setdefault('is_admin', True)
+
+
+        user = self.create_user(
+            email,
+            password=password,
+            phone_no=phone_no,
+            aadhar_no=aadhar_no,
+            id=id,
+        )
+        user.is_admin = True
+        user.save(using=self._db)
+        return user
+
+class booth_manager(AbstractBaseUser):
     Id = models.AutoField(primary_key=True)
     name = models.CharField(max_length=100)
     email = models.EmailField(max_length=50,unique=True)
     phone_no = PhoneNumberField(max_length=13,unique=True)
     aadhaar_no = models.CharField(unique=True,max_length=50)
     constituency_id = models.ForeignKey("constituency",on_delete=models.DO_NOTHING)
-    password = models.CharField(max_length=50)
-    confirm_password = models.CharField(max_length=50)
+
+    USERNAME_FIELD = 'email'
+    Reqired_FIELDS = ['name','phone_no','aadhaar_no','constituency_id']
 
 class voter(models.Model):
     # Id = models.AutoField()
