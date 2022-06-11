@@ -18,11 +18,14 @@
   <div class="form">
     <form action="{% url 'utility:GetVoterDetails' %}" method="post">
         {% csrf_token %}
-        <!-- <lottie-player src="https://assets4.lottiefiles.com/datafiles/XRVoUu3IX4sGWtiC3MPpFnJvZNq7lVWDCa8LSqgS/profile.json"  background="transparent"  speed="1"  style="justify-content: center;" loop  autoplay></lottie-player> -->
-      <input id="aadharNo" type="text" placeholder="&#xf007;  Aadhar No"/>
+        <lottie-player src="https://assets4.lottiefiles.com/datafiles/XRVoUu3IX4sGWtiC3MPpFnJvZNq7lVWDCa8LSqgS/profile.json"  background="transparent"  speed="1"  style="justify-content: center;" loop  autoplay></lottie-player>
+      {% comment %} <input name="adharNo" id="aadharNo" type="text" placeholder="&#xf007;  Aadhar No"/>
     
       <input type="submit" >
-      <p class="message"></p>
+      <p class="message"></p> {% endcomment %}
+      {% comment %} {% csrf_token %} {% endcomment %}
+    {{form.aadhar_no }}
+    <input type="submit" value="Submit">
     </form>
   </div>
 </div>

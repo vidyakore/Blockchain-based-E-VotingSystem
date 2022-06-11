@@ -4,7 +4,7 @@ from django.core.exceptions import PermissionDenied
 from django.contrib.auth.decorators import login_required
 # from models import election_type,party,constituency,constituency_type,booth_manager,voter,voter_constituency
 from . import models
-
+from .forms import voterAadhar
 
 #BLockchain Imports
 from solcx import compile_standard, install_solc
@@ -21,13 +21,13 @@ def home(request):
     return render(request,'home.html')
 
 def GetVoter(request):
-    return render(request,'GetVoter.html')
+    context ={}
+    context['form']= voterAadhar()
+    return render(request,'GetVoter.html',context)
 
-def GetVoterDetails(request):
-    # return HttpResponse("Hello world")
-    # return request
-    print("Adhr No.....",request)
-    # obj = models.voter.objects.get(id=id)
+def GetVoterDetails(request,aadhar_no):
+    obj = models.voter.objects.get(voter_aadhaar_no=aadhar_no)
+    # obj = models.voter.objects.get(voter_aadhaar_no=request.aadharNo)
     context = {"object":request}
     return render(request,'VoterDetails.html',context)
 
