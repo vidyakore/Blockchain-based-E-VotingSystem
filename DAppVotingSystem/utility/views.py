@@ -9,11 +9,11 @@ from . import models
 #BLockchain Imports
 from solcx import compile_standard, install_solc
 import json
-# from web3 import Web3 
-# from dotenv import load_dotenv
-# from web3.middleware import geth_poa_middleware
+from web3 import Web3 
+from dotenv import load_dotenv
+from web3.middleware import geth_poa_middleware
 import os
-# load_dotenv()
+load_dotenv()
 
 # Create your views here.
 
