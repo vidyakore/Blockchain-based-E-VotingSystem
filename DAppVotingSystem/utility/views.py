@@ -2,19 +2,35 @@ from django.shortcuts import render
 from django.http import HttpResponse, HttpResponseNotFound
 from django.core.exceptions import PermissionDenied
 from django.contrib.auth.decorators import login_required
-from  models import election_type,party,constituency,constituency_type,contract_manager,booth_manager,voter,voter_constituency
-
+# from models import election_type,party,constituency,constituency_type,booth_manager,voter,voter_constituency
+from . import models
 
 
 #BLockchain Imports
 from solcx import compile_standard, install_solc
 import json
-from web3 import Web3 
-from dotenv import load_dotenv
-from web3.middleware import geth_poa_middleware
-import os
-load_dotenv()
+# from web3 import Web3 
+# from dotenv import load_dotenv
+# from web3.middleware import geth_poa_middleware
+# import os
+# load_dotenv()
 
 # Create your views here.
+
+def home(request):
+    return render(request,'home.html')
+
+def GetVoter(request):
+    return render(request,'GetVoter.html')
+
+def GetVoterDetails(request):
+    # return HttpResponse("Hello world")
+    # return request
+    print("Adhr No.....",request)
+    # obj = models.voter.objects.get(id=id)
+    context = {"object":request}
+    return render(request,'VoterDetails.html',context)
+
 def hello(request):
     return HttpResponse("Hello world")
+
