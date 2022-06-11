@@ -13,7 +13,7 @@ class party(models.Model):
     symbol = models.ImageField(upload_to='images')
 
 class constituency(models.Model):
-    id = models.AutoField(primary_key=True,default="Null")
+    id = models.AutoField(primary_key=True)
     name=models.CharField(max_length=200)
     State=models.CharField(max_length=200)
     total_voters=models.IntegerField()
@@ -36,7 +36,7 @@ class booth_manager(models.Model):
     Reqired_FIELDS = ['name','phone_no','aadhaar_no','constituency_id']
 
 class voter(models.Model):
-    id = models.AutoField(primary_key=True,default="Null")
+    id = models.AutoField(primary_key=True)
     voter_id = models.IntegerField(unique=True)
     voter_aadhaar_no = models.CharField(unique=True,max_length=50)
     name = models.CharField(max_length=100)
@@ -52,7 +52,7 @@ class voter_constituency(models.Model):
     vidhansabha_id=models.IntegerField()
 
 class candidate(models.Model):
-    id = models.AutoField(primary_key=True,default="Null")
+    id = models.AutoField(primary_key=True)
     name=models.CharField(max_length=200)
     phone_no=models.IntegerField()
     email= models.EmailField(max_length=200)
@@ -76,6 +76,6 @@ class votes(models.Model):
 
 
 class voter_vote_status(models.Model):
-    id = models.AutoField(primary_key=True,default="Null")
+    id = models.AutoField(primary_key=True)
     voter_id=models.ForeignKey("voter",on_delete=models.DO_NOTHING)
     casted_vote=models.BooleanField(null=False)
