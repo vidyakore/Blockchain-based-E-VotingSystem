@@ -38,10 +38,10 @@ def GetVoterDetails(request):
     if pattern.fullmatch(string=adhar_no):
         try:
             obj = models.voter.objects.get(aadhaar_no=adhar_no)
-            print('............................-------------------------..........................................')
+            print('............................-------------------------..........................................',obj.name)
         except ObjectDoesNotExist as DoesNotExist:
                 return HttpResponse("User Dose not exsit")         
-        context = {"object":request}
+        context = {"obj":obj}
         return render(request,'VoterDetails.html',context)
     else:
          return HttpResponse("Hello world")
