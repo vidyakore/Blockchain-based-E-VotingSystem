@@ -36,7 +36,6 @@ class booth_manager(models.Model):
     Reqired_FIELDS = ['name','phone_no','aadhaar_no','constituency_id']
 
 class voter(models.Model):
-    voter_id = models.IntegerField(unique=True)
     Id = models.AutoField(primary_key=True,unique=True)
     aadhaar_no = models.CharField(unique=True,max_length=50)
     name = models.CharField(max_length=100)
@@ -44,21 +43,11 @@ class voter(models.Model):
     address = models.TextField(max_length=200)
     email = models.EmailField(max_length=50, blank=True)
     phone_no = PhoneNumberField(max_length=13,unique=True)
-# class voter(models.Model):
-#     Id = models.AutoField(primary_key=True,unique=True)
-#     name = models.CharField(max_length=100)
-#     age = models.IntegerField()
-#     email = models.EmailField(max_length=50,unique=True)
-#     phone_no = PhoneNumberField(max_length=13,unique=True)
-#     aadhaar_no = models.CharField(unique=True,max_length=50)
-#     address = models.TextField(max_length=200)
-
-    # USERNAME_FIELD = 'email'
     Reqired_FIELDS = ['name','phone_no','aadhaar_no','constituency_id']
     
 class voter_constituency(models.Model):
     Id = models.AutoField(primary_key=True)
-    voter_id=models.ForeignKey("voter",on_delete=models.DO_NOTHING)
+    voter_id=models.IntegerField()
     loksabha_id=models.IntegerField()
     vidhansabha_id=models.IntegerField()
 
