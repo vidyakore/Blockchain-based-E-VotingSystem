@@ -40,11 +40,15 @@ def GetVoterDetails(request):
             obj = models.voter.objects.get(aadhaar_no=adhar_no)
             print('............................-------------------------..........................................',obj.name)
         except ObjectDoesNotExist as DoesNotExist:
-                return HttpResponse("User Dose not exsit")         
+                context ={}
+                context['form']= voterAadhar()
+                return render(request,'GetVoter.html',context)        
         context = {"obj":obj}
         return render(request,'VoterDetails.html',context)
     else:
-         return HttpResponse("Hello world")
+        context ={}
+        context['form']= voterAadhar()
+        return render(request,'GetVoter.html',context)
 
 def hello(request):
     return HttpResponse("Hello world")
