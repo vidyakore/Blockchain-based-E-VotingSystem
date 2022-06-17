@@ -8,48 +8,100 @@ from django.core.exceptions import ObjectDoesNotExist
 from . import models
 from .forms import voterAadhar
 
-#BLockchain Imports
+# BLockchain Imports
 from solcx import compile_standard, install_solc
 import json
 import re
 
-from web3 import Web3 
+from web3 import Web3
 from dotenv import load_dotenv
 from web3.middleware import geth_poa_middleware
 import os
+
 load_dotenv()
 
 # Create your views here.
 
+
 def home(request):
-    return render(request,'home.html')
+    return render(request, "home.html")
+
 
 def GetVoter(request):
-    context ={}
-    context['form']= voterAadhar()
-    return render(request,'GetVoter.html',context)
+    context = {}
+    context["form"] = voterAadhar()
+    return render(request, "GetVoter.html", context)
+
 
 def GetVoterDetails(request):
-    # obj = models.voter.objects.get(voter_aadhaar_no=aadhar_no)
-    adhar_no= request.POST.get('aadhar_no')
+#getting Voter Aadhaar Number and Election type from Request
+    adhar_no = request.POST.get("aadhar_no")
+    election_type = request.POST.get("election_type")
+    
+   
+    
+    #Regex Checking for Aadhar Card
     pattern = re.compile("^([0-9]){4}([0-9]){4}([0-9]){4}$")
     pattern.fullmatch(string=adhar_no)
-    print(adhar_no, pattern.fullmatch(string=adhar_no))
+    
+    #Regex match Checking
     if pattern.fullmatch(string=adhar_no):
+        
+        # Example populating Data into Django Form
+        # data = {'id': game.id, 'position': game.position}
+        # form = UserQueueForm(initial=data)
+    
+    
+    
         try:
+            #getting User data From Aadhaar Number from voter model
             obj = models.voter.objects.get(aadhaar_no=adhar_no)
-            print('............................-------------------------..........................................',obj.name)
+            #getting  voter's counstiuency list 
+            voter_constituency_id=models.voter_constituency.objects.get(voter_id=obj.Id)
+             #checking If Election Type is valid
+            if election_type=='vidhansabha':
+                #fetching Voters COnstituency
+                
+                print("Voter_id :  ",obj.Id)
+                print("voter_constituency_id :  ",voter_constituency_id.vidhansabha_id)
+                constituency=models.constituency.objects.get(Id=voter_constituency_id.vidhansabha_id)
+                print("constituency_id :  ",constituency.Id,constituency.name)
+                
+            elif election_type=='loksabha':
+                constituency=models.constituency.objects.get(Id=voter_constituency_id.loksabha_id)
+                print("constituency_id :  ",constituency.Id,constituency.name)
+
+                return HttpResponse("Loksabha : ",)
+            else:
+                return HttpResponse("Invalid Election Type Please select Proper Election Type")
+            context = {"obj": obj}
+            return render(request, "VoterDetails.html", context)
+        
+        
+        #getting Candidate List In that Consituency For That Election Type
+        #fetch form candidate constituenct model by constituency id
+        #add list of candidates in dropdown
+        
+        
+        
+        
         except ObjectDoesNotExist as DoesNotExist:
-                context ={}
-                context['form']= voterAadhar()
-                return render(request,'GetVoter.html',context)        
-        context = {"obj":obj}
-        return render(request,'VoterDetails.html',context)
+            context = {}
+            context["form"] = voterAadhar()
+            # return HttpResponse("Hello world")
+            
+            return render(request, "GetVoter.html", context)
+
     else:
-        context ={}
-        context['form']= voterAadhar()
-        return render(request,'GetVoter.html',context)
+        context = {}
+        context["form"] = voterAadhar()
+        # return HttpResponse("Hello world")
+        return render(request, "GetVoter.html", context)
+
 
 def hello(request):
     return HttpResponse("Hello world")
 
+
+def voting(request):
+    pass

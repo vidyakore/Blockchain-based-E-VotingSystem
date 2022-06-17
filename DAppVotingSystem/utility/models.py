@@ -28,7 +28,7 @@ class booth_manager(models.Model):
     Id = models.AutoField(primary_key=True)
     name = models.CharField(max_length=100)
     email = models.EmailField(max_length=50,unique=True)
-    phone_no = PhoneNumberField(max_length=13,unique=True)
+    phone_no = models.CharField(max_length=200)
     aadhaar_no = models.CharField(unique=True,max_length=50)
     constituency_id = models.ForeignKey("constituency",on_delete=models.DO_NOTHING)
 
@@ -42,7 +42,7 @@ class voter(models.Model):
     age = models.IntegerField()
     address = models.TextField(max_length=200)
     email = models.EmailField(max_length=50, blank=True)
-    phone_no = PhoneNumberField(max_length=13,unique=True)
+    phone_no = models.CharField(max_length=200)
     Reqired_FIELDS = ['name','phone_no','aadhaar_no','constituency_id']
     
 class voter_constituency(models.Model):
@@ -54,7 +54,7 @@ class voter_constituency(models.Model):
 class candidate(models.Model):
     Id = models.AutoField(primary_key=True)
     name=models.CharField(max_length=200)
-    phone_no=models.IntegerField()
+    phone_no=models.CharField(max_length=200)
     email= models.EmailField(max_length=200)
     aadhaar_no=models.CharField(unique=True,max_length=50)
 
