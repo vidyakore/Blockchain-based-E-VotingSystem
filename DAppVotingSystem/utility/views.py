@@ -62,15 +62,20 @@ def GetVoterDetails(request):
             if election_type=='vidhansabha':
                 #fetching Voters COnstituency
                 
-                print("Voter_id :  ",obj.Id)
+                print('\n---------------------------\n',"Voter_id :  ",obj.Id,'\n')
                 print("voter_constituency_id :  ",voter_constituency_id.vidhansabha_id)
                 constituency=models.constituency.objects.get(Id=voter_constituency_id.vidhansabha_id)
-                print("constituency_id :  ",constituency.Id,constituency.name)
+                candidatelist= models.candidate_constituency.objects.get(constituency_id=constituency.Id,election_type_id=2)
+
+                print("\n constituency_id :  ",constituency.Id,constituency.name,"\n----------------------------------------\n","candidatelist :  ",candidatelist.candidate_id,'\n----------------------------------------\n')
                 
             elif election_type=='loksabha':
                 constituency=models.constituency.objects.get(Id=voter_constituency_id.loksabha_id)
                 print("constituency_id :  ",constituency.Id,constituency.name)
-
+                candidatelist= models.candidate_constituency.objects.filter(constituency_id = constituency.Id,election_type_id=1).values()
+                # print("\nconstituency_id :  ",constituency.Id,constituency.name,"\n----------------------------------------\n","candidatelist :  ",candidatelist.candidate_id,'\n----------------------------------------\n')
+                for i in candidatelist:
+                    print("\n candidate :  ",i,'\n----------------------------------------\n')
                 return HttpResponse("Loksabha : ",)
             else:
                 return HttpResponse("Invalid Election Type Please select Proper Election Type")
@@ -79,6 +84,7 @@ def GetVoterDetails(request):
         
         
         #getting Candidate List In that Consituency For That Election Type
+        
         #fetch form candidate constituenct model by constituency id
         #add list of candidates in dropdown
         
