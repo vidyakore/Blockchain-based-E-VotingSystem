@@ -6,7 +6,7 @@ from django.core.exceptions import ObjectDoesNotExist
 
 # from models import election_type,party,constituency,constituency_type,booth_manager,voter,voter_constituency
 from . import models
-from .forms import voterAadhar
+from .forms import voterAadhar,voterDetails
 
 # BLockchain Imports
 from solcx import compile_standard, install_solc
@@ -49,34 +49,45 @@ def GetVoterDetails(request):
         
         # Example populating Data into Django Form
         # data = {'id': game.id, 'position': game.position}
-        # form = UserQueueForm(initial=data)
+        # form = voterDetails(initial=data)
     
     
     
         try:
             #getting User data From Aadhaar Number from voter model
             obj = models.voter.objects.get(aadhaar_no=adhar_no)
+            
+            
             #getting  voter's counstiuency list 
             voter_constituency_id=models.voter_constituency.objects.get(voter_id=obj.Id)
+            
+            
              #checking If Election Type is valid
             if election_type=='vidhansabha':
+                
                 #fetching Voters COnstituency
                 
                 print('\n---------------------------\n',"Voter_id :  ",obj.Id,'\n')
                 print("voter_constituency_id :  ",voter_constituency_id.vidhansabha_id)
-                constituency=models.constituency.objects.get(Id=voter_constituency_id.vidhansabha_id)
-                candidatelist= models.candidate_constituency.objects.get(constituency_id=constituency.Id,election_type_id=2)
-
-                print("\n constituency_id :  ",constituency.Id,constituency.name,"\n----------------------------------------\n","candidatelist :  ",candidatelist.candidate_id,'\n----------------------------------------\n')
                 
+                constituency=models.constituency.objects.get(Id=voter_constituency_id.vidhansabha_id)
+                candidatelist= models.candidate_constituency.objects.filter(constituency_id=constituency.Id,election_type_id=2).values()
+                
+                data = {'name':obj.name,'aadhaar_no':obj.aadhaar_no,'age':obj.age,'address':obj.address,'email':obj.email,'phone_no':obj.phone_no,'constituency_name':constituency.name,'constituency_type':'Vidhansabha','constituency_id':constituency.Id,'voter_id':obj.Id}
+                
+                form = voterDetails(initial=data)
+
+                # print("\n constituency_id :  ",constituency.Id,constituency.name,"\n----------------------------------------\n","candidatelist :  ",candidatelist.candidate_id,'\n----------------------------------------\n')
+                context = {'form':form}
+                return render(request, "VoterDetails.html", context)
             elif election_type=='loksabha':
                 constituency=models.constituency.objects.get(Id=voter_constituency_id.loksabha_id)
                 print("constituency_id :  ",constituency.Id,constituency.name)
                 candidatelist= models.candidate_constituency.objects.filter(constituency_id = constituency.Id,election_type_id=1).values()
-                # print("\nconstituency_id :  ",constituency.Id,constituency.name,"\n----------------------------------------\n","candidatelist :  ",candidatelist.candidate_id,'\n----------------------------------------\n')
-                for i in candidatelist:
-                    print("\n candidate :  ",i,'\n----------------------------------------\n')
-                return HttpResponse("Loksabha : ",)
+
+                print(type(candidatelist))
+                
+                # return HttpResponse(candidatelist)
             else:
                 return HttpResponse("Invalid Election Type Please select Proper Election Type")
             context = {"obj": obj}
@@ -110,4 +121,6 @@ def hello(request):
 
 
 def voting(request):
-    pass
+    # adhar_no = request.POST.get("aadhar_no")
+    # election_type = request.POST.get("election_type")
+    return HttpResponse(request)

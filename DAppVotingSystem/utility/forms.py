@@ -20,3 +20,15 @@ class voterAadhar(forms.Form):
             fields = ['aadhaar_no','election_type']
         aadhar_no = forms.CharField(label='aadhar_no', max_length=12, required=True, validators=['^([0-9]){4}([0-9]){4}([0-9]){4}$'])
         election_type= forms.CharField(label='Select Election Type : ', widget=forms.Select(choices=FRUIT_CHOICES))
+class voterDetails(forms.Form):
+        class Meta:
+            model = voter
+            fields = ['name','aadhaar_no','age','address','email','phone_no','constituency_name','constituency_type','constituency_id','voter_id']
+        name = forms.CharField(label='name', max_length=100, required=True)
+        aadhaar_no=forms.CharField(label='Aadhaar Number',max_length=12,required=True)
+        email = forms.EmailField(label='Email', max_length=50, required=True)
+        phone_no = forms.CharField(label='Phone Number', max_length=12, required=True)
+        constituency_name = forms.CharField(label='Constituency Name', max_length=100, required=True)
+        constituency_type = forms.CharField(label='Constituency Type', max_length=100, required=True)
+        constituency_id=forms.CharField(label='Constituency Id', max_length=100, required=True,widget=forms.HiddenInput())
+        voter_id=forms.CharField(label='Voter Id', max_length=100, required=True,widget=forms.HiddenInput())

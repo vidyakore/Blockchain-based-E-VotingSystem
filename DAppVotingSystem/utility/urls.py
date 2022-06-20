@@ -9,4 +9,6 @@ urlpatterns = [
     path('GetVoter/', views.GetVoter, name='GetVoter'),
     # path('GetVoterDetails/', views.GetVoterDetails, name='GetVoterDetails'),
     path('GetVoterDetails/', views.GetVoterDetails, name='GetVoterDetails'),
+    path('Voting/', views.voting, name='Voting'),
+    
 ]
