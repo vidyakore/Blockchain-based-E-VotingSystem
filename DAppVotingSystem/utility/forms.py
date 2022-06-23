@@ -32,3 +32,9 @@ class voterDetails(forms.Form):
         constituency_type = forms.CharField(label='Constituency Type', max_length=100, required=True)
         constituency_id=forms.CharField(label='Constituency Id', max_length=100, required=True,widget=forms.HiddenInput())
         voter_id=forms.CharField(label='Voter Id', max_length=100, required=True,widget=forms.HiddenInput())
+# class candidate_List(forms.Form):
+#     class Meta:
+#         fields=[" candidatelist","constituency_name","constituency_type"]
+#     candidatelist=forms.CharField(label='Candidatel',widget=forms.Select())
+#     constituency_name=forms.CharField(label='Constituency',required=True)
+#     constituency_type=forms.CharField(label='Election Type')

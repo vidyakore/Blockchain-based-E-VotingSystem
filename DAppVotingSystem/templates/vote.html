@@ -1,0 +1,14 @@
+
+<div>
+
+  <div class="form">
+        <form action="{% url 'utility:Vote' %}" method="Post">
+                  {% csrf_token%}
+                  {{form.as_ul}}
+                  <br>
+                  <input class="btn btn danger" type="submit" value="Vote">
+      </form>
+  </div>
+
+</div>
+
