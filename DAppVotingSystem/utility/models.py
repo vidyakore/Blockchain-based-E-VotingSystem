@@ -72,10 +72,10 @@ class candidate_constituency(models.Model):
 class votes(models.Model):
     Id = models.AutoField(primary_key=True)
     candidate_id=models.ForeignKey("candidate",on_delete=models.DO_NOTHING)
-    total_votes=models.IntegerField()
-
+    total_votes=models.IntegerField(default=0)
 
 class voter_vote_status(models.Model):
     Id = models.AutoField(primary_key=True)
     voter_id=models.ForeignKey("voter",on_delete=models.DO_NOTHING)
-    casted_vote=models.BooleanField(null=False)
+    casted_vote=models.BooleanField(null=False,default=0)
+    # election_type=models.IntegerField(null=False)

@@ -4,7 +4,7 @@ from django.core.exceptions import PermissionDenied
 from django.contrib.auth.decorators import login_required
 from django.core.exceptions import ObjectDoesNotExist
 
-# from models import election_type,party,constituency,constituency_type,booth_manager,voter,voter_constituency
+from .models import *
 from . import models
 
 # importing Forms
@@ -160,16 +160,19 @@ def voting(request):
     constituency_id = request.POST.get("constituency_id")
     voter = request.POST.get("voter_id")
     int(constituency_id)
+    
     if constituency_type == "Vidhansabha":
         candidatelist = models.candidate_constituency.objects.filter(
             constituency_id_id=int(constituency_id), election_type_id_id=2
         ).values()
+        print("\n",constituency_type,"\n")
+        print('\n',candidatelist,'\n')
     elif constituency_type == "Loksabha":
         candidatelist = models.candidate_constituency.objects.filter(
             constituency_id_id=int(constituency_id), election_type_id_id=1
         ).values()
         print(type(candidatelist))
-        list_of_candi = []
+    list_of_candi = []
     for candi in candidatelist:
         candidateNames = models.candidate.objects.get(Id=candi["candidate_id_id"])
         list_of_candi.append((candi["candidate_id_id"], str(candidateNames.name)))
@@ -205,4 +208,35 @@ def voting(request):
 
 
 def vote(request):
+    candidate_id = request.POST.get("candidate")
+    constituency_name=request.POST.get("constituency_name")
+    constituency_type=request.POST.get("constituency_type")
+    voter_id=request.POST.get("voter_id")
+    vote_status=0
+    try:
+        voter=models.voter.objects.get(Id=voter_id)
+        vote_status=models.voter_vote_status.objects.get(voter_id=voter_id)
+        
+        print(vote_status.casted_vote)
+    except ObjectDoesNotExist as DoesNotExist:
+        b = voter_vote_status(voter_id=voter, casted_vote=0)
+        b.save()
+        voter=models.voter.objects.get(Id=voter_id)
+        vote_status=models.voter_vote_status.objects.get(voter_id=voter_id)
+    print('\n vote status' , vote_status.casted_vote  ,'\n')
+    if not vote_status.casted_vote:
+        try:
+            candidate=models.candidate.objects.get(Id=candidate_id)
+            print(candidate)
+            v=models.votes.objects.get(candidate_id=candidate)
+            v.total_votes+=1
+            v.save()
+            
+        except ObjectDoesNotExist as DoesNotExist:
+            v= votes(candidate_id=candidate,total_votes=1)
+            v.save
+    else:    
+        return HttpResponse("request")
     return HttpResponse(request)
+
+    
