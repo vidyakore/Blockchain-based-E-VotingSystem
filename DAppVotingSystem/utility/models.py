@@ -1,6 +1,6 @@
 from django.db import models
 from phonenumber_field.modelfields import PhoneNumberField
-from django.contrib.auth.models import AbstractBaseUser, BaseUserManager
+from django.contrib.auth.models import AbstractUser, BaseUserManager
 
 # Create your models here.
 class election_type(models.Model):
@@ -24,7 +24,7 @@ class constituency_type(models.Model):
     constituency_id=models.ForeignKey("constituency",on_delete=models.DO_NOTHING)
 
 
-class booth_manager(models.Model):
+class booth_manager(AbstractUser):
     Id = models.AutoField(primary_key=True)
     name = models.CharField(max_length=100)
     email = models.EmailField(max_length=50,unique=True)
@@ -32,8 +32,8 @@ class booth_manager(models.Model):
     aadhaar_no = models.CharField(unique=True,max_length=50)
     constituency_id = models.ForeignKey("constituency",on_delete=models.DO_NOTHING)
 
-    USERNAME_FIELD = 'email'
-    Reqired_FIELDS = ['name','phone_no','aadhaar_no','constituency_id']
+    # USERNAME_FIELD = 'email'
+    # Reqired_FIELDS = ['name','phone_no','aadhaar_no','constituency_id','email']
 
 class voter(models.Model):
     Id = models.AutoField(primary_key=True,unique=True)

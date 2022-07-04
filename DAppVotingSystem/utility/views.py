@@ -1,24 +1,27 @@
-from django.shortcuts import render
+from django.shortcuts import render,redirect
 from django.http import HttpResponse, HttpResponseNotFound
 from django.core.exceptions import PermissionDenied
 from django.contrib.auth.decorators import login_required
 from django.core.exceptions import ObjectDoesNotExist
+print('\n**********************************************\n','importing Models','\n***************************************************************\n')
 
 from .models import *
 from . import models
+print('\n ***********************************************************\n importing Forms \n ************************************************************\n')
 
 # importing Forms
-from .forms import voterAadhar, voterDetails
-
+from .forms import voterAadhar, voterDetails,UserRegistrationForm
+print('*******************\n Importing slocx and contract \n *****************************************')
 # BLockchain Imports
 from solcx import compile_standard, install_solc
 import json
 import re
-
+print('\n****************************\n Loading .env varibales \n')
 from web3 import Web3
 from dotenv import load_dotenv
 from web3.middleware import geth_poa_middleware
 import os
+print('\n************************************\n All Components Lodad \n')
 
 load_dotenv()
 
@@ -238,5 +241,23 @@ def vote(request):
     else:    
         return HttpResponse("request")
     return HttpResponse(request)
+
+from django.contrib.auth import get_user_model,login,logout
+def register(request):
+    if request.user.is_authenticated:
+        return redirect('/')
+    if request.method=="POST":
+        form=UserRegistrationForm(request.POST)
+        if form.is_valid():
+            user= form.save()
+            login(request, user)
+            return redirect('/GetVoter')
+        else:
+            for error in list(form.error.values()):
+                print(request, error)
+    else:
+        form =UserRegistrationForm
+    return render(request, 'register.html',context={"form":form})
+
 
     

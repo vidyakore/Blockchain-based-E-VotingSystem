@@ -42,7 +42,7 @@ INSTALLED_APPS = [
     'phonenumber_field',
     
 ]
-
+AUTH_USER_MODEL='utility.booth_manager'
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',

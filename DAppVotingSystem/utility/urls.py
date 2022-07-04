@@ -11,6 +11,7 @@ urlpatterns = [
     path('GetVoterDetails/', views.GetVoterDetails, name='GetVoterDetails'),
     path('Voting/', views.voting, name='Voting'),
     path('Vote/', views.vote, name='Vote'),
+    path("Register/",views.register,name='Register')
     
     
 ]

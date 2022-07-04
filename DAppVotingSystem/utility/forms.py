@@ -3,7 +3,8 @@ from django.core.validators import RegexValidator
 from .models import election_type,party,constituency,constituency_type,booth_manager,voter,voter_constituency,candidate,candidate_party
 my_validator = RegexValidator(r"^([0-9]){4}([0-9]){4}([0-9]){4}$", "Your string should contain letter A in it.")
 
-
+from django.contrib.auth.forms import UserCreationForm,AuthenticationForm
+from django.contrib.auth import get_user_model
 FRUIT_CHOICES= [
     (None,'Election Type '),
     ('vidhansabha', 'Vidhansabha'),
@@ -38,3 +39,16 @@ class voterDetails(forms.Form):
 #     candidatelist=forms.CharField(label='Candidatel',widget=forms.Select())
 #     constituency_name=forms.CharField(label='Constituency',required=True)
 #     constituency_type=forms.CharField(label='Election Type')
+class UserRegistrationForm(UserCreationForm):
+    email = forms.EmailField(help_text='Enter a Valid Email',required=True)
+    class Meta:
+        model= get_user_model()
+        fields =['name','email','phone_no','aadhaar_no','constituency_id']
+    def save(self,commit=True):
+        user=super(UserRegistrationForm, self).save(commit=False)
+        user.email=self.cleaned_data['email']
+        if commit:
+            user.save()
+        return user
+class userLogin(AuthenticationForm):
+    pass
